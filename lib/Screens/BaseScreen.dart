@@ -3,14 +3,14 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import '../Global.dart';
 import 'Styles.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class BaseScreen extends StatefulWidget {
+  const BaseScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<BaseScreen> createState() => _BaseScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _BaseScreenState extends State<BaseScreen> {
   final model = GenerativeModel(
     model: 'gemini-1.5-flash-latest',
     apiKey: geminiKey,
