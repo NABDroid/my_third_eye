@@ -3,6 +3,7 @@ import 'Screens/BaseScreen.dart';
 
 
 void main() {
+  print("HELLO WORLD");
   runApp(const AppRoot());
 }
 

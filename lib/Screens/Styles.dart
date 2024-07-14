@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-Color themeColor = Colors.indigo;
+Color themeColor = Colors.purple;
 Color liteTextColor = Colors.white;
 Color darkTextColor = Colors.black;
 

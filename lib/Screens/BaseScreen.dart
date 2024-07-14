@@ -18,27 +18,28 @@ class _BaseScreenState extends State<BaseScreen> {
   late CameraController cameraController;
   late Future<void> _initializeControllerFuture;
   XFile? image;
+  late final ChatSession chatSession;
+  ValueNotifier<bool> rebuildBase = ValueNotifier<bool>(true);
 
   String? apiResponse = "No data";
   int currentScreenId = 0;
 
-  final model = GenerativeModel(
-    model: 'gemini-1.5-flash-latest',
-    apiKey: geminiKey,
-  );
-  late final ChatSession chatSession = model.startChat();
-
-   List<Widget> screens = <Widget>[
+  List<Widget> screens = <Widget>[
     HomeScreen(),
     HistoryScreen(),
     SettingsScreen(),
   ];
 
-
   @override
   void initState() {
     super.initState();
+    print(geminiKey);
     loadCameras();
+    final model = GenerativeModel(
+      model: 'gemini-ultra',
+      apiKey: geminiKey,
+    );
+    chatSession = model.startChat();
   }
 
   @override
@@ -48,25 +49,36 @@ class _BaseScreenState extends State<BaseScreen> {
         appBar: AppBar(
           backgroundColor: themeColor,
           title: Text(
-            "Chokh",
+            "ThirdEye",
             style: appBarTextStyle,
           ),
         ),
-        body: SingleChildScrollView(child: screens[currentScreenId]),
+        body: SingleChildScrollView(
+            child: ValueListenableBuilder<bool>(
+          valueListenable: rebuildBase,
+          builder: (context, value, child) {
+            return screens[currentScreenId];
+          },
+        )),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.camera_alt),
           onPressed: takeImage,
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.history), label: "History"),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: "Settings"),
-          ],
-          currentIndex: currentScreenId,
-          onTap: bottomNavBarTap,
+        bottomNavigationBar: ValueListenableBuilder<bool>(
+          valueListenable: rebuildBase,
+          builder: (context, value, child) {
+            return BottomNavigationBar(
+              items: const [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.history), label: "History"),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.settings), label: "Settings"),
+              ],
+              currentIndex: currentScreenId,
+              onTap: bottomNavBarTap,
+            );
+          },
         ),
       ),
     );
@@ -80,9 +92,8 @@ class _BaseScreenState extends State<BaseScreen> {
   }
 
   void bottomNavBarTap(int index) {
-    setState(() {
-      currentScreenId = index;
-    });
+    currentScreenId = index;
+    rebuildBase.value = !rebuildBase.value;
   }
 
   loadCameras() async {
@@ -99,18 +110,24 @@ class _BaseScreenState extends State<BaseScreen> {
 
   Future<void> takeImage() async {
     try {
+      print("========================== Taking image ==========================");
+
       await _initializeControllerFuture;
       image = await cameraController.takePicture();
       final geminiResponse = await chatSession.sendMessage(
-        Content.text("sing a song"),
+        Content.text("hey, gemini"),
       );
-      if(geminiResponse.text == null) {
+      if (geminiResponse.text == null) {
         apiResponse = "No response from api";
-      }
-      else {
+      } else {
         apiResponse = geminiResponse.text!;
       }
-      setState(() {});
-    } catch (e) {}
+      print("================ geminiResponse.text");
+      print(geminiResponse.text);
+      // setState(() {});
+    } catch (e) {
+      print("Error =========");
+      print(e);
+    }
   }
 }
