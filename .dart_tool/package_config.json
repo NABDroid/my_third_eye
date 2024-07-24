@@ -27,7 +27,7 @@
     },
     {
       "name": "camera_avfoundation",
-      "rootUri": "file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/camera_avfoundation-0.9.17",
+      "rootUri": "file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/camera_avfoundation-0.9.17+1",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -63,9 +63,9 @@
     },
     {
       "name": "cross_file",
-      "rootUri": "file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.4+1",
+      "rootUri": "file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.1+5",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "2.12"
     },
     {
       "name": "cupertino_icons",
@@ -117,7 +117,7 @@
     },
     {
       "name": "http",
-      "rootUri": "file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.2.1",
+      "rootUri": "file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.2.2",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
@@ -285,9 +285,9 @@
     },
     {
       "name": "web",
-      "rootUri": "file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/web-0.5.1",
+      "rootUri": "file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/web-1.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "3.4"
     },
     {
       "name": "my_third_eye",
@@ -296,7 +296,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-07-24T07:34:35.448622Z",
+  "generated": "2024-07-24T07:41:02.938083Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///C:/flutterSDK",

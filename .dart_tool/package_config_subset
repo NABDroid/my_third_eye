@@ -16,8 +16,8 @@ file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/camera_android_
 file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/camera_android_camerax-0.6.7+1/lib/
 camera_avfoundation
 3.2
-file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/camera_avfoundation-0.9.17/
-file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/camera_avfoundation-0.9.17/lib/
+file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/camera_avfoundation-0.9.17+1/
+file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/camera_avfoundation-0.9.17+1/lib/
 camera_platform_interface
 3.2
 file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/camera_platform_interface-2.8.0/
@@ -39,9 +39,9 @@ collection
 file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/collection-1.18.0/
 file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/collection-1.18.0/lib/
 cross_file
-3.3
-file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.4+1/
-file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.4+1/lib/
+2.12
+file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.1+5/
+file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.1+5/lib/
 cupertino_icons
 3.1
 file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/cupertino_icons-1.0.8/
@@ -64,8 +64,8 @@ file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/google_generati
 file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/google_generative_ai-0.4.3/lib/
 http
 3.3
-file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.2.1/
-file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.2.1/lib/
+file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.2.2/
+file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/http-1.2.2/lib/
 http_parser
 2.12
 file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/http_parser-4.0.2/
@@ -171,9 +171,9 @@ vm_service
 file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/vm_service-14.2.1/
 file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/vm_service-14.2.1/lib/
 web
-3.3
-file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/web-0.5.1/
-file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/web-0.5.1/lib/
+3.4
+file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/web-1.0.0/
+file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/web-1.0.0/lib/
 sky_engine
 3.2
 file:///C:/flutterSDK/bin/cache/pkg/sky_engine/
