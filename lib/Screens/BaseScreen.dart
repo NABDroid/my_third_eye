@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -16,13 +18,15 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreenState extends State<BaseScreen> {
   late CameraController cameraController;
-  late Future<void> _initializeControllerFuture;
+  //late Future<void> _initializeControllerFuture;
   XFile? image;
-  late final ChatSession chatSession;
+  late ChatSession chatSession;
   ValueNotifier<bool> rebuildBase = ValueNotifier<bool>(true);
-
-  String? apiResponse = "No data";
+  TextEditingController questionController = TextEditingController();
+  String? apiResponse = "Take a image to process";
   int currentScreenId = 0;
+  //late final firstCamera;
+  late final cameras;
 
   List<Widget> screens = <Widget>[
     HomeScreen(),
@@ -33,10 +37,11 @@ class _BaseScreenState extends State<BaseScreen> {
   @override
   void initState() {
     super.initState();
-    print(geminiKey);
+    print("key-------------------------------- $geminiKey");
     loadCameras();
     final model = GenerativeModel(
-      model: 'gemini-ultra',
+      // model: 'gemini-ultra',
+      model: 'gemini-1.5-flash',
       apiKey: geminiKey,
     );
     chatSession = model.startChat();
@@ -53,33 +58,63 @@ class _BaseScreenState extends State<BaseScreen> {
             style: appBarTextStyle,
           ),
         ),
-        body: SingleChildScrollView(
-            child: ValueListenableBuilder<bool>(
+        body: ValueListenableBuilder<bool>(
           valueListenable: rebuildBase,
           builder: (context, value, child) {
-            return screens[currentScreenId];
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    (image == null) ? Container() : Image.file(File(image!.path)),
+
+                    Text(apiResponse!, style: darkDetailsTextStyle,),
+                    SizedBox(height: 20,),
+                    TextField(
+                      controller: questionController,
+                      style: darkDetailsTextStyle,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        hintText: "Type something...",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           },
-        )),
+        ),
+
+        // SingleChildScrollView(
+        //     child: ValueListenableBuilder<bool>(
+        //   valueListenable: rebuildBase,
+        //   builder: (context, value, child) {
+        //     return screens[currentScreenId];
+        //   },
+        // )),
+
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.camera_alt),
           onPressed: takeImage,
         ),
-        bottomNavigationBar: ValueListenableBuilder<bool>(
-          valueListenable: rebuildBase,
-          builder: (context, value, child) {
-            return BottomNavigationBar(
-              items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.history), label: "History"),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.settings), label: "Settings"),
-              ],
-              currentIndex: currentScreenId,
-              onTap: bottomNavBarTap,
-            );
-          },
-        ),
+        // bottomNavigationBar: ValueListenableBuilder<bool>(
+        //   valueListenable: rebuildBase,
+        //   builder: (context, value, child) {
+        //     return BottomNavigationBar(
+        //       items: const [
+        //         BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+        //         BottomNavigationBarItem(
+        //             icon: Icon(Icons.history), label: "History"),
+        //         BottomNavigationBarItem(
+        //             icon: Icon(Icons.settings), label: "Settings"),
+        //       ],
+        //       currentIndex: currentScreenId,
+        //       onTap: bottomNavBarTap,
+        //     );
+        //   },
+        // ),
       ),
     );
   }
@@ -99,35 +134,53 @@ class _BaseScreenState extends State<BaseScreen> {
   loadCameras() async {
     WidgetsFlutterBinding.ensureInitialized();
     final cameras = await availableCameras();
-    final firstCamera = cameras.first;
-
-    cameraController = CameraController(
-      firstCamera,
-      ResolutionPreset.medium,
-    );
-    _initializeControllerFuture = cameraController.initialize();
   }
 
   Future<void> takeImage() async {
     try {
-      print("========================== Taking image ==========================");
 
-      await _initializeControllerFuture;
+      cameraController = CameraController(
+        cameras.first,
+        ResolutionPreset.medium,
+      );
+
+      // _initializeControllerFuture = cameraController.initialize();
+      //await _initializeControllerFuture;
+      cameraController.initialize();
+
+
+      String question = questionController.text.toString().trim();
+
       image = await cameraController.takePicture();
+      cameraController.dispose();
       final geminiResponse = await chatSession.sendMessage(
-        Content.text("hey, gemini"),
+        Content.text(question),
       );
       if (geminiResponse.text == null) {
         apiResponse = "No response from api";
       } else {
         apiResponse = geminiResponse.text!;
       }
-      print("================ geminiResponse.text");
-      print(geminiResponse.text);
-      // setState(() {});
+      rebuildBase.value = !rebuildBase.value;
     } catch (e) {
       print("Error =========");
       print(e);
+    }
+  }
+
+  Future<void> onlyStringQues() async {
+    String question = questionController.text.toString().trim();
+    try {
+      final geminiResponse = await chatSession.sendMessage(
+        Content.text(question),
+      );
+      if (geminiResponse.text == null) {
+        apiResponse = "No response from api";
+      } else {
+        apiResponse = geminiResponse.text!;
+      }
+      rebuildBase.value = !rebuildBase.value;
+    } catch (e) {
     }
   }
 }
