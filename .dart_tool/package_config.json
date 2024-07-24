@@ -104,6 +104,12 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "flutter_tts",
+      "rootUri": "file:///C:/Users/Zuljalal/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_tts-4.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
       "name": "flutter_web_plugins",
       "rootUri": "file:///C:/flutterSDK/packages/flutter_web_plugins",
       "packageUri": "lib/",
@@ -296,7 +302,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-07-24T07:41:02.938083Z",
+  "generated": "2024-07-24T08:20:46.414777Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///C:/flutterSDK",
