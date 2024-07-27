@@ -1,14 +1,19 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'Screens/BaseScreen.dart';
 
 
-void main() {
-  print("HELLO WORLD");
-  runApp(const AppRoot());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final cameraLists = await availableCameras();
+  final firstCamera = cameraLists.first;
+  runApp(AppRoot(camera: firstCamera,));
 }
 
 class AppRoot extends StatelessWidget {
-  const AppRoot({super.key});
+  const AppRoot({super.key, required this.camera});
+  final CameraDescription camera;
+
 
 
   @override
@@ -19,7 +24,7 @@ class AppRoot extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const BaseScreen(),
+      home: BaseScreen(camera: camera,),
     );
   }
 }

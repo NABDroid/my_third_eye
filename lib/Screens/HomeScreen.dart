@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class HomeScreen extends StatelessWidget {
   final String? response;
   final XFile? image;
-  HomeScreen({Key? key, this.response, this.image}) : super(key: key);
+  const HomeScreen({super.key, this.response, this.image});
 
   @override
   Widget build(BuildContext context) {
