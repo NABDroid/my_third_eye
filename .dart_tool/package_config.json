@@ -21,7 +21,7 @@
     },
     {
       "name": "camera_android_camerax",
-      "rootUri": "file:///C:/Users/Maslinia/AppData/Local/Pub/Cache/hosted/pub.dev/camera_android_camerax-0.6.7+1",
+      "rootUri": "file:///C:/Users/Maslinia/AppData/Local/Pub/Cache/hosted/pub.dev/camera_android_camerax-0.6.7+2",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -63,9 +63,9 @@
     },
     {
       "name": "cross_file",
-      "rootUri": "file:///C:/Users/Maslinia/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.1+5",
+      "rootUri": "file:///C:/Users/Maslinia/AppData/Local/Pub/Cache/hosted/pub.dev/cross_file-0.3.4+2",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.3"
     },
     {
       "name": "cupertino_icons",
@@ -93,7 +93,7 @@
     },
     {
       "name": "flutter_plugin_android_lifecycle",
-      "rootUri": "file:///C:/Users/Maslinia/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.20",
+      "rootUri": "file:///C:/Users/Maslinia/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.21",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -104,20 +104,20 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "flutter_tts",
+      "rootUri": "file:///C:/Users/Maslinia/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_tts-4.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
       "name": "flutter_web_plugins",
       "rootUri": "file:///C:/flutterSDK/packages/flutter_web_plugins",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
-      "name": "fluttertoast",
-      "rootUri": "file:///C:/Users/Maslinia/AppData/Local/Pub/Cache/hosted/pub.dev/fluttertoast-8.2.5",
-      "packageUri": "lib/",
-      "languageVersion": "2.12"
-    },
-    {
       "name": "google_generative_ai",
-      "rootUri": "file:///C:/Users/Maslinia/AppData/Local/Pub/Cache/hosted/pub.dev/google_generative_ai-0.4.3",
+      "rootUri": "file:///C:/Users/Maslinia/AppData/Local/Pub/Cache/hosted/pub.dev/google_generative_ai-0.4.4",
       "packageUri": "lib/",
       "languageVersion": "3.1"
     },
@@ -266,7 +266,7 @@
       "languageVersion": "3.4"
     }
   ],
-  "generated": "2024-07-27T19:23:08.012029Z",
+  "generated": "2024-08-02T17:31:47.305391Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
   "flutterRoot": "file:///C:/flutterSDK",

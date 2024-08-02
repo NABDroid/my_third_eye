@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import '../Global.dart';
 import 'Styles.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({
@@ -29,22 +30,32 @@ class _BaseScreenState extends State<BaseScreen> {
   TextEditingController questionController = TextEditingController();
   String? apiResponse = "Take a image to process";
 
+  // Speak related
+  late FlutterTts flutterTts;
+
+
   @override
   void initState() {
     super.initState();
 
-    // cameraController = CameraController(
-    //   widget.camera,
-    //   ResolutionPreset.medium,
-    // );
-    // initializeControllerFuture = cameraController.initialize();
+    cameraController = CameraController(
+      widget.camera,
+      ResolutionPreset.medium,
+    );
+    initializeControllerFuture = cameraController.initialize();
     final model = GenerativeModel(
       // model: 'gemini-ultra',
       model: 'gemini-1.5-flash',
       apiKey: geminiKey,
     );
     chatSession = model.startChat();
+    initTts();
   }
+
+
+  dynamic initTts() {
+    flutterTts = FlutterTts();}
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +82,7 @@ class _BaseScreenState extends State<BaseScreen> {
                         children: [
                           (image == null)
                               ? Container()
-                              : Image.file(File(image!.path)),
+                              : SizedBox(height: 300,child: Image.file(File(image!.path))),
                           Text(
                             apiResponse!,
                             style: darkDetailsTextStyle,
@@ -116,11 +127,11 @@ class _BaseScreenState extends State<BaseScreen> {
 
   Future<void> takeImage() async {
     try {
-      cameraController = await CameraController(
-        widget.camera,
-        ResolutionPreset.medium,
-      );
-      await (cameraController.initialize());
+      // cameraController = CameraController(
+      //   widget.camera,
+      //   ResolutionPreset.medium,
+      // );
+      // await (cameraController.initialize());
 
       image = await cameraController.takePicture();
       String question = questionController.text.toString().trim();
@@ -135,14 +146,14 @@ class _BaseScreenState extends State<BaseScreen> {
         apiResponse = "No response from api";
       } else {
         apiResponse = geminiResponse.text!;
+        await flutterTts.speak(apiResponse!);
       }
       rebuildBase.value = !rebuildBase.value;
-      cameraController.dispose();
+      // cameraController.dispose();
     } catch (e) {
-      cameraController.dispose();
+      // cameraController.dispose();
       image = null;
-      print("Error =========");
-      print(e);
+
     }
   }
 }
