@@ -5,6 +5,8 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 import '../Global.dart';
 import 'Styles.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({
@@ -29,9 +31,15 @@ class _BaseScreenState extends State<BaseScreen> {
   ValueNotifier<bool> rebuildBase = ValueNotifier<bool>(true);
   TextEditingController questionController = TextEditingController();
   String? apiResponse = "Take a image to process";
+  String? command = "";
+
 
   // Speak related
   late FlutterTts flutterTts;
+
+  // Speech recognition related
+  late stt.SpeechToText speech;
+  bool isListening = false;
 
 
   @override
@@ -50,11 +58,35 @@ class _BaseScreenState extends State<BaseScreen> {
     );
     chatSession = model.startChat();
     initTts();
+    initSpeech();
   }
 
 
   dynamic initTts() {
     flutterTts = FlutterTts();}
+
+  void initSpeech() async {
+    speech = stt.SpeechToText();
+    bool available = await speech.initialize();
+    if (available) {
+      print("initSpeech true");
+      startListening();
+    } else {
+      // Handle the error here
+    }
+  }
+
+  void startListening() {
+    speech.listen(
+      onResult: (result) {
+        command = result.recognizedWords;
+        rebuildBase.value = !rebuildBase.value;
+        if (result.recognizedWords.toLowerCase().contains("Hello")) {
+          takeImage();
+        }
+      },
+    );
+  }
 
 
   @override
@@ -94,15 +126,8 @@ class _BaseScreenState extends State<BaseScreen> {
                       ),
                     ),
                   ),
-                  TextField(
-                    controller: questionController,
-                    style: darkDetailsTextStyle,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      hintText: "Type something...",
-                    ),
-                  ),
+                  Text((command == null)?" ":command!),
+
                 ],
               ),
             );
@@ -123,8 +148,6 @@ class _BaseScreenState extends State<BaseScreen> {
     super.dispose();
   }
 
-
-
   Future<void> takeImage() async {
     try {
       // cameraController = CameraController(
@@ -134,11 +157,10 @@ class _BaseScreenState extends State<BaseScreen> {
       // await (cameraController.initialize());
 
       image = await cameraController.takePicture();
-      String question = questionController.text.toString().trim();
-
+      // String question = questionController.text.toString().trim();
       image = await cameraController.takePicture();
       final imageBytes = await image!.readAsBytes();
-      Content multiContent = Content.multi([TextPart(question), DataPart('image/jpeg', imageBytes)]);
+      Content multiContent = Content.multi([TextPart("What's there?"), DataPart('image/jpeg', imageBytes)]);
       final geminiResponse = await chatSession
           .sendMessage(multiContent)
           .timeout(const Duration(seconds: 15));
