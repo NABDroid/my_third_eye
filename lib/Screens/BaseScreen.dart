@@ -7,18 +7,19 @@ import 'Styles.dart';
 import 'dart:async';
 import 'package:flutter_tts/flutter_tts.dart';
 
-
 class BaseScreen extends StatefulWidget {
   const BaseScreen({
     super.key,
     required this.camera,
   });
+
   final CameraDescription camera;
+
   @override
   State<BaseScreen> createState() => _BaseScreenState();
 }
 
-class _BaseScreenState extends State<BaseScreen>  with WidgetsBindingObserver {
+class _BaseScreenState extends State<BaseScreen> {
   late CameraController cameraController;
   late Future<void> initializeControllerFuture;
   XFile? image;
@@ -29,8 +30,6 @@ class _BaseScreenState extends State<BaseScreen>  with WidgetsBindingObserver {
   String? command = "";
   late FlutterTts flutterTts;
   Timer? _timer;
-
-
 
   @override
   void initState() {
@@ -46,21 +45,27 @@ class _BaseScreenState extends State<BaseScreen>  with WidgetsBindingObserver {
       apiKey: geminiKey,
     );
     chatSession = model.startChat();
-    _timer = Timer.periodic(Duration(seconds: 40), (Timer t) => takeImage());
+    initTts();
+
+    initializeControllerFuture.then((_) {
+      _timer = Timer.periodic(const Duration(seconds: 30), (Timer t) async {
+        await takeImage();
+      });
+    });
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      // App is in the background
-    } else if (state == AppLifecycleState.resumed) {
-      // App is in the foreground
-    }
+  dynamic initTts() {
+    flutterTts = FlutterTts();
   }
 
-
-
-
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.paused) {
+  //     // App is in the background
+  //   } else if (state == AppLifecycleState.resumed) {
+  //     // App is in the foreground
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -68,39 +73,44 @@ class _BaseScreenState extends State<BaseScreen>  with WidgetsBindingObserver {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: themeColor,
-          title: Text(
-            "ThirdEye",
-            style: appBarTextStyle,
+          title: Center(
+            child: Text(
+              "Third Eye",
+              style: appBarTextStyle,
+            ),
           ),
         ),
         body: ValueListenableBuilder<bool>(
           valueListenable: rebuildBase,
           builder: (context, value, child) {
-            return Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          (image == null)
-                              ? Container()
-                              : SizedBox(height: 300,child: Image.file(File(image!.path))),
-                          Text(
-                            apiResponse!,
-                            style: darkDetailsTextStyle,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                        ],
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            (image == null)
+                                ? Container()
+                                : SizedBox(
+                                    height: 300,
+                                    child: Image.file(File(image!.path))),
+                            Text(
+                              apiResponse!,
+                              style: darkDetailsTextStyle,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-
-                ],
+                  ],
+                ),
               ),
             );
           },
@@ -118,31 +128,32 @@ class _BaseScreenState extends State<BaseScreen>  with WidgetsBindingObserver {
     cameraController.dispose();
     image = null;
     _timer?.cancel();
-    WidgetsBinding.instance.removeObserver(this);
+    // WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   Future<void> takeImage() async {
     try {
-
       image = await cameraController.takePicture();
       image = await cameraController.takePicture();
       final imageBytes = await image!.readAsBytes();
-      Content multiContent = Content.multi([TextPart("What's there?"), DataPart('image/jpeg', imageBytes)]);
+      Content multiContent = Content.multi(
+          [TextPart("What's there?"), DataPart('image/jpeg', imageBytes)]);
       final geminiResponse = await chatSession
           .sendMessage(multiContent)
           .timeout(const Duration(seconds: 15));
       if (geminiResponse.text == null) {
-        apiResponse = "No response from api";
+        apiResponse = "No response from gemini, check your internet connection";
       } else {
         apiResponse = geminiResponse.text!;
         apiResponse = apiResponse.replaceAll("The image shows", "I'm seeing");
-        await flutterTts.speak(apiResponse!);
       }
       rebuildBase.value = !rebuildBase.value;
+      await flutterTts.speak(apiResponse!);
     } catch (e) {
+      print("=========================================================");
+      print(e.toString());
       image = null;
-
     }
   }
 }

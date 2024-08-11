@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-Color themeColor = Colors.purple;
+Color themeColor = Color(0xFF6482AD);
 Color liteTextColor = Colors.white;
 Color darkTextColor = Colors.black;
 
