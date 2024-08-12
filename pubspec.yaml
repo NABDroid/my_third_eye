@@ -38,7 +38,8 @@ dependencies:
   google_generative_ai: ^0.4.3
   camera: ^0.11.0+1
   flutter_tts: ^3.8.1
-  speech_to_text: ^6.6.2
+  wakelock_plus: ^1.1.6
+  keep_screen_on: ^3.0.0
 
 
 dev_dependencies:

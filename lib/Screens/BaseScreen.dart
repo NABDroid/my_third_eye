@@ -2,10 +2,13 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:keep_screen_on/keep_screen_on.dart';
 import '../Global.dart';
 import 'Styles.dart';
 import 'dart:async';
 import 'package:flutter_tts/flutter_tts.dart';
+
+
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({
@@ -45,34 +48,28 @@ class _BaseScreenState extends State<BaseScreen> {
       apiKey: geminiKey,
     );
     chatSession = model.startChat();
-    initTts();
+    flutterTts = FlutterTts();
+    initProcess();
 
+  }
+
+
+  Future<void> initProcess() async {
+    await takeImage();
     initializeControllerFuture.then((_) {
-      _timer = Timer.periodic(const Duration(seconds: 30), (Timer t) async {
+      _timer = Timer.periodic(const Duration(seconds: 20), (Timer t) async {
         await takeImage();
       });
     });
   }
 
-  dynamic initTts() {
-    flutterTts = FlutterTts();
-  }
-
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   if (state == AppLifecycleState.paused) {
-  //     // App is in the background
-  //   } else if (state == AppLifecycleState.resumed) {
-  //     // App is in the foreground
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: themeColor,
+          backgroundColor: Colors.black,
           title: Center(
             child: Text(
               "Third Eye",
@@ -84,6 +81,8 @@ class _BaseScreenState extends State<BaseScreen> {
           valueListenable: rebuildBase,
           builder: (context, value, child) {
             return Card(
+              color: Colors.black,
+              surfaceTintColor: Colors.black,
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
@@ -100,7 +99,7 @@ class _BaseScreenState extends State<BaseScreen> {
                                     child: Image.file(File(image!.path))),
                             Text(
                               apiResponse!,
-                              style: darkDetailsTextStyle,
+                              style: liteDetailsTextStyle,
                             ),
                             const SizedBox(
                               height: 20,
@@ -128,13 +127,12 @@ class _BaseScreenState extends State<BaseScreen> {
     cameraController.dispose();
     image = null;
     _timer?.cancel();
-    // WidgetsBinding.instance.removeObserver(this);
+    KeepScreenOn.turnOff();
     super.dispose();
   }
 
   Future<void> takeImage() async {
     try {
-      image = await cameraController.takePicture();
       image = await cameraController.takePicture();
       final imageBytes = await image!.readAsBytes();
       Content multiContent = Content.multi(
